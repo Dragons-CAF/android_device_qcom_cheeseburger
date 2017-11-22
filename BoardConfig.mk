@@ -22,11 +22,11 @@ TARGET_2ND_CPU_VARIANT := cortex-a9
 TARGET_HW_DISK_ENCRYPTION := true
 TARGET_CRYPTFS_HW_PATH := device/qcom/common/cryptfs_hw
 
-TARGET_NO_BOOTLOADER := false
+TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
 
--include $(QCPATH)/common/msm8998/BoardConfigVendor.mk
+include device/qcom//msm8998/BoardConfigVendor.mk
 
 # Some framework code requires this to enable BT
 BOARD_HAVE_BLUETOOTH := true
@@ -39,21 +39,21 @@ BOARD_USE_LEGACY_UI := true
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
 
-ifeq ($(ENABLE_AB), true)
+#ifeq ($(ENABLE_AB), true)
 #A/B related defines
-AB_OTA_UPDATER := true
+#AB_OTA_UPDATER := true
 # Full A/B partiton update set
 #   AB_OTA_PARTITIONS := xbl rpm tz hyp pmic modem abl boot keymaster cmnlib cmnlib64 system bluetooth
 # Subset A/B partitions for Android-only image update
-AB_OTA_PARTITIONS ?= boot system
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
-TARGET_NO_RECOVERY := true
-BOARD_USES_RECOVERY_AS_BOOT := true
-else
+#AB_OTA_PARTITIONS ?= boot system
+#BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+#TARGET_NO_RECOVERY := true
+#BOARD_USES_RECOVERY_AS_BOOT := true
+#else
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x04000000
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-endif
+#endif
 
 ifeq ($(ENABLE_AB), true)
   ifeq ($(ENABLE_VENDOR_IMAGE), true)
@@ -70,7 +70,8 @@ else
 endif
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 10737418240
+#BOARD_USERDATAIMAGE_PARTITION_SIZE := 10737418240
+BOARD_USERDATAIMAGE_PARTITION_SIZE :=  32212254720
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -85,7 +86,7 @@ endif
 BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
     $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
-    $(KERNEL_MODULES_OUT)/qca_cld3_wlan.ko
+    $(KERNEL_MODULES_OUT)/qca_cld3/qca_cld3_wlan.ko
 
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
@@ -96,11 +97,11 @@ TARGET_USES_COLOR_METADATA := true
 
 ifeq ($(BOARD_KERNEL_CMDLINE),)
 ifeq ($(TARGET_KERNEL_VERSION),4.4)
-     BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc1b0000
+     BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc1b0000 androidboot.selinux=permissive
 else
-     BOARD_KERNEL_CMDLINE += console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 earlycon=msm_hsl_uart,0xc1b0000
+     BOARD_KERNEL_CMDLINE += console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 earlycon=msm_hsl_uart,0xc1b0000 androidboot.selinux=permissive
 endif
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3 androidboot.selinux=permissive
 endif
 
 BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
