@@ -86,8 +86,9 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 
 PRODUCT_NAME := msm8998
 PRODUCT_DEVICE := msm8998
-PRODUCT_BRAND := Android
-PRODUCT_MODEL := MSM8998 for arm64
+PRODUCT_MANUFACTURER := OnePlus
+PRODUCT_BRAND := OnePlus
+PRODUCT_MODEL := ONEPLUS A5000
 
 # Enable features in video HAL that can compile only on this platform
 TARGET_USES_MEDIA_EXTENSIONS := true
