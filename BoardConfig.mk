@@ -140,17 +140,8 @@ TARGET_COMPILE_WITH_MSM_KERNEL := true
 #Enable PD locater/notifier
 TARGET_PD_SERVICE_ENABLED := true
 
-# Enable dex pre-opt to speed up initial boot
-ifeq ($(HOST_OS),linux)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-      WITH_DEXPREOPT_PIC := true
-      ifneq ($(TARGET_BUILD_VARIANT),user)
-        # Retain classes.dex in APK's for non-user builds
-        DEX_PREOPT_DEFAULT := nostripping
-      endif
-    endif
-endif
+# Disable dex pre-opt
+WITH_DEXPREOPT := false
 
 #Enable peripheral manager
 TARGET_PER_MGR_ENABLED := true
