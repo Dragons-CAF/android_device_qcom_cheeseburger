@@ -21,7 +21,6 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 endif
 
 TARGET_KERNEL_VERSION := 4.4
-BOARD_HAVE_QCOM_FM := true
 TARGET_USES_NQ_NFC := true
 
 ifeq ($(TARGET_USES_NQ_NFC),true)
@@ -46,6 +45,7 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
 endif
+
 # video seccomp policy files
 PRODUCT_COPY_FILES += \
     device/qcom/msm8998/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
@@ -112,10 +112,6 @@ PRODUCT_PACKAGES += telephony-ext
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
     qcom.bluetooth.soc=cherokee
-
-ifeq ($(strip $(BOARD_HAVE_QCOM_FM)),true)
-PRODUCT_BOOT_JARS += qcom.fmradio
-endif #BOARD_HAVE_QCOM_FM
 
 DEVICE_MANIFEST_FILE := device/qcom/msm8998/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
@@ -232,13 +228,6 @@ PRODUCT_COPY_FILES += device/qcom/msm8998/powerhint.xml:$(TARGET_COPY_OUT_VENDOR
 #for android_filesystem_config.h
 PRODUCT_PACKAGES += \
     fs_config_files
-
-# dm-verity configuration
-PRODUCT_SUPPORTS_VERITY := true
-PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/bootdevice/by-name/system
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/bootdevice/by-name/vendor
-endif
 
 PRODUCT_FULL_TREBLE_OVERRIDE := false
 
