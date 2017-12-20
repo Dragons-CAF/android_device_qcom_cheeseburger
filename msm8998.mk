@@ -7,12 +7,12 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_DISABLE_DASH := true
 
 # Default vendor configuration.
-ifeq ($(ENABLE_VENDOR_IMAGE),)
-ENABLE_VENDOR_IMAGE := true
-endif
+#ifeq ($(ENABLE_VENDOR_IMAGE),)
+#ENABLE_VENDOR_IMAGE := true
+#endif
 
 # Default A/B configuration.
-ENABLE_AB ?= true
+ENABLE_AB ?= false
 
 # Disable QTIC until it's brought up in split system/vendor
 # configuration to avoid compilation breakage.
@@ -21,7 +21,6 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 endif
 
 TARGET_KERNEL_VERSION := 4.4
-BOARD_HAVE_QCOM_FM := true
 TARGET_USES_NQ_NFC := true
 
 ifeq ($(TARGET_USES_NQ_NFC),true)
@@ -46,6 +45,7 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
 endif
+
 # video seccomp policy files
 PRODUCT_COPY_FILES += \
     device/qcom/msm8998/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
@@ -86,8 +86,9 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 
 PRODUCT_NAME := msm8998
 PRODUCT_DEVICE := msm8998
-PRODUCT_BRAND := Android
-PRODUCT_MODEL := MSM8998 for arm64
+PRODUCT_MANUFACTURER := OnePlus
+PRODUCT_BRAND := OnePlus
+PRODUCT_MODEL := ONEPLUS A5000
 
 # Enable features in video HAL that can compile only on this platform
 TARGET_USES_MEDIA_EXTENSIONS := true
@@ -102,19 +103,15 @@ PRODUCT_BOOT_JARS += telephony-ext
 
 PRODUCT_PACKAGES += telephony-ext
 
-ifneq ($(strip $(QCPATH)),)
-PRODUCT_BOOT_JARS += WfdCommon
+#ifneq ($(strip $(QCPATH)),)
+#PRODUCT_BOOT_JARS += WfdCommon
 #Android oem shutdown hook
-PRODUCT_BOOT_JARS += oem-services
-endif
+#PRODUCT_BOOT_JARS += oem-services
+#endif
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
     qcom.bluetooth.soc=cherokee
-
-ifeq ($(strip $(BOARD_HAVE_QCOM_FM)),true)
-PRODUCT_BOOT_JARS += qcom.fmradio
-endif #BOARD_HAVE_QCOM_FM
 
 DEVICE_MANIFEST_FILE := device/qcom/msm8998/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
@@ -215,8 +212,8 @@ PRODUCT_PACKAGES += libqmi_cci_system
 PRODUCT_PACKAGES += libdiag_system
 
 # High performance VR feature
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.vr.high_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vr.high_performance.xml
+#PRODUCT_COPY_FILES += \
+#    frameworks/native/data/etc/android.hardware.vr.high_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vr.high_performance.xml
 
 # FBE support
 PRODUCT_COPY_FILES += \
@@ -232,16 +229,9 @@ PRODUCT_COPY_FILES += device/qcom/msm8998/powerhint.xml:$(TARGET_COPY_OUT_VENDOR
 PRODUCT_PACKAGES += \
     fs_config_files
 
-# dm-verity configuration
-PRODUCT_SUPPORTS_VERITY := true
-PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/bootdevice/by-name/system
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/bootdevice/by-name/vendor
-endif
+PRODUCT_FULL_TREBLE_OVERRIDE := false
 
-PRODUCT_FULL_TREBLE_OVERRIDE := true
-
-PRODUCT_VENDOR_MOVE_ENABLED := true
+PRODUCT_VENDOR_MOVE_ENABLED := false
 
 # List of AAPT configurations
 PRODUCT_AAPT_CONFIG += xlarge large
@@ -301,3 +291,6 @@ PRODUCT_PACKAGES += android.hardware.vr@1.0-impl \
 #Thermal
 PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
                     android.hardware.thermal@1.0-service
+
+$(call inherit-product-if-exists, vendor/oneplus/prebuilt.mk)
+$(call inherit-product-if-exists, device/qcom/msm8998/device-vendor.mk)
