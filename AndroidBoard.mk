@@ -3,17 +3,17 @@ LOCAL_PATH := $(call my-dir)
 #----------------------------------------------------------------------
 # Compile (L)ittle (K)ernel bootloader and the nandwrite utility
 #----------------------------------------------------------------------
-ifneq ($(strip $(TARGET_NO_BOOTLOADER)),true)
+#ifneq ($(strip $(TARGET_NO_BOOTLOADER)),true)
 
 # Compile
-include bootable/bootloader/edk2/AndroidBoot.mk
-
-$(INSTALLED_BOOTLOADER_MODULE): $(TARGET_EMMC_BOOTLOADER) | $(ACP)
-	$(transform-prebuilt-to-target)
-$(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
-
-droidcore: $(INSTALLED_BOOTLOADER_MODULE)
-endif
+#include bootable/bootloader/edk2/AndroidBoot.mk
+#
+#$(INSTALLED_BOOTLOADER_MODULE): $(TARGET_EMMC_BOOTLOADER) | $(ACP)
+#	$(transform-prebuilt-to-target)
+#$(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
+#
+#droidcore: $(INSTALLED_BOOTLOADER_MODULE)
+#endif
 
 #----------------------------------------------------------------------
 # Compile Linux Kernel
@@ -117,13 +117,12 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES    := $(LOCAL_MODULE)
 LOCAL_MODULE_PATH  := $(TARGET_OUT_ETC)/wifi
 include $(BUILD_PREBUILT)
+endif
 
 # Create symbolic links for WLAN
 $(shell mkdir -p $(TARGET_OUT_VENDOR)/firmware/wlan/qca_cld; \
 ln -sf /vendor/etc/wifi/WCNSS_qcom_cfg.ini \
 $(TARGET_OUT_VENDOR)/firmware/wlan/qca_cld/WCNSS_qcom_cfg.ini)
-
-endif
 
 #Create dsp directory
 $(shell mkdir -p $(TARGET_OUT_VENDOR)/lib/dsp)

@@ -212,8 +212,8 @@ PRODUCT_PACKAGES += libqmi_cci_system
 PRODUCT_PACKAGES += libdiag_system
 
 # High performance VR feature
-#PRODUCT_COPY_FILES += \
-#    frameworks/native/data/etc/android.hardware.vr.high_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vr.high_performance.xml
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vr.high_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vr.high_performance.xml
 
 # FBE support
 PRODUCT_COPY_FILES += \
@@ -230,13 +230,23 @@ PRODUCT_PACKAGES += \
     fs_config_files
 
 PRODUCT_FULL_TREBLE_OVERRIDE := false
-
 PRODUCT_VENDOR_MOVE_ENABLED := false
 
 # List of AAPT configurations
 PRODUCT_AAPT_CONFIG += xlarge large
 
-#for wlan
+#Healthd packages
+PRODUCT_PACKAGES += android.hardware.health@1.0-impl \
+		    android.hardware.health@1.0-convert \
+		    android.hardware.health@1.0-service \
+		    libhealthd.msm
+#Thermal
+PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
+                    android.hardware.thermal@1.0-service
+#VR
+PRODUCT_PACKAGES += android.hardware.vr@1.0-impl \
+                    android.hardware.vr@1.0-service
+#WLan
 PRODUCT_PACKAGES += \
 	wificond \
 	wifilogd
@@ -254,13 +264,6 @@ PRODUCT_PACKAGES += update_engine \
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
 endif
-
-
-#Healthd packages
-PRODUCT_PACKAGES += android.hardware.health@1.0-impl \
-		    android.hardware.health@1.0-convert \
-		    android.hardware.health@1.0-service \
-		    libhealthd.msm
 
 #FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
@@ -285,12 +288,6 @@ PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/system/vendor/lib64/libril-qc-qmi-1.
 # Change to dlkm when dlkm feature is fully enabled
 KERNEL_MODULES_INSTALL := system
 KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
-#VR
-PRODUCT_PACKAGES += android.hardware.vr@1.0-impl \
-                    android.hardware.vr@1.0-service
-#Thermal
-PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
-                    android.hardware.thermal@1.0-service
 
 $(call inherit-product-if-exists, vendor/oneplus/prebuilt.mk)
 $(call inherit-product-if-exists, device/qcom/msm8998/device-vendor.mk)
