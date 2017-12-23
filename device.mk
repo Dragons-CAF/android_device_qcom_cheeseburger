@@ -120,6 +120,11 @@ PRODUCT_PACKAGES += \
    android.hardware.health@1.0-service \
    libhealthd.msm
 
+#HIDL
+PRODUCT_PACKAGES += \
+    android.hidl.base@1.0 \
+    android.hidl.manager@1.0
+
 # Media/Video Codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
 PRODUCT_COPY_FILES += \
